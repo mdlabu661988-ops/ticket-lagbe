@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap');
+@import "./theme.css";
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Noto Sans Bengali", ui-sans-serif, system-ui, sans-serif;
+  --color-slate-50: var(--theme-slate-50);
+  --color-slate-100: var(--theme-slate-100);
+  --color-slate-200: var(--theme-slate-200);
+  --color-slate-400: var(--theme-slate-400);
+  --color-slate-500: var(--theme-slate-500);
+  --color-slate-900: var(--theme-slate-900);
+  --color-emerald-50: var(--theme-emerald-50);
+  --color-emerald-100: var(--theme-emerald-100);
+  --color-emerald-600: var(--theme-emerald-600);
+  --color-blue-50: var(--theme-blue-50);
+  --color-blue-100: var(--theme-blue-100);
+  --color-blue-600: var(--theme-blue-600);
+  --color-blue-700: var(--theme-blue-700);
+  --color-amber-100: var(--theme-amber-100);
+  --color-amber-600: var(--theme-amber-600);
+  --color-red-500: var(--theme-red-500);
+  --color-emerald-500: var(--theme-emerald-500);
+  --color-indigo-50: var(--theme-indigo-50);
+  --color-indigo-600: var(--theme-indigo-600);
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+  --color-slate-800: var(--theme-slate-800);
+  --color-slate-300: var(--theme-slate-300);
+  --color-slate-600: var(--theme-slate-600);
+}
+
+@layer base {
+  body {
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
+    overflow-x: hidden;
+    width: 100%;
+  }
+  
+  html {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  section {
+    overflow-x: hidden;
+  }
+
+  @media (max-width: 640px) {
+    html {
+      /* Fluid font size based on viewport width to scale all rem-based elements proportionally */
+      font-size: 3.8vw; 
+    }
+    
+    #root {
+      zoom: 1 !important;
+      transform: none !important;
+      width: 100% !important;
+    }
+  }
+}
+
+.markdown-body ul {
+  @apply list-disc list-inside space-y-1;
+}
+
+@layer utilities {
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+    .print-only {
+      display: block !important;
+    }
+    body {
+      background: white !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .print-ticket-container {
+      width: 100% !important;
+      max-width: none !important;
+      box-shadow: none !important;
+      border: 1px solid #e2e8f0 !important;
+      padding: 2rem !important;
+      margin: 0 !important;
+    }
+  }
+  .print-only {
+    display: none;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-slate-100 rounded-full;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors;
+  }
+
+  /* html2canvas oklch fix */
+  #printable-ticket {
+    background-color: white;
+  }
+}

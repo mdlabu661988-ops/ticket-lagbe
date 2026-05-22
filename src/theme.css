@@ -1,0 +1,56 @@
+/**
+ * theme.css
+ * Maps standard theme colors to dynamic CSS custom property variables.
+ * Allows applyTheme and general user theme choices to control the scheme dynamically in real-time.
+ */
+
+:root {
+  /* Primary and Accent theme variables */
+  --theme-primary: #2563eb;
+  --theme-secondary: #475569;
+  --theme-text: #0f172a;
+  --theme-bg: #f8fafc;
+
+  /* Slate shades (grayscale palette) */
+  --theme-slate-50: #f8fafc;
+  --theme-slate-100: #f1f5f9;
+  --theme-slate-200: #e2e8f0;
+  --theme-slate-300: #cbd5e1;
+  --theme-slate-400: #94a3b8;
+  --theme-slate-500: #64748b;
+  --theme-slate-600: #475569;
+  --theme-slate-800: #1e293b;
+  --theme-slate-900: #0f172a;
+
+  /* Blue shades (brand accents) */
+  --theme-blue-50: #eff6ff;
+  --theme-blue-100: #dbeafe;
+  --theme-blue-600: #2563eb;
+  --theme-blue-700: #1d4ed8;
+
+  /* Emerald shades (positive actions / confirm states) */
+  --theme-emerald-50: #ecfdf5;
+  --theme-emerald-100: #d1fae5;
+  --theme-emerald-500: #10b981;
+  --theme-emerald-600: #059669;
+
+  /* Amber shades (warnings / alerts) */
+  --theme-amber-100: #fef3c7;
+  --theme-amber-600: #d97706;
+
+  /* Indigo shades (alternative highlights) */
+  --theme-indigo-50: #eef2ff;
+  --theme-indigo-600: #4f46e5;
+
+  /* Red shades (danger / error states) */
+  --theme-red-500: #ef4444;
+}
+
+/* Base Body Styles connected to dynamic CSS variables */
+body {
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  font-family: var(--font-sans);
+  font-size: var(--base-font-size, 16px);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

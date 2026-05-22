@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() { return request.auth != null; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    // --- Validation Blueprints ---
+    
+    function isValidBus(data) {
+      return data.keys().hasAll(['name', 'reg_no', 'capacity'])
+          && data.name is string && data.name.size() > 0 && data.name.size() <= 100
+          && data.reg_no is string && data.reg_no.size() > 0 && data.reg_no.size() <= 50
+          && data.capacity is int && data.capacity > 0 && data.capacity <= 100
+          && (data.get('image_url', null) == null || (data.image_url is string && data.image_url.size() <= 600));
+    }
+
+    function isValidRoute(data) {
+      return data.keys().hasAll(['from_city', 'to_city', 'fare'])
+          && data.from_city is string && data.from_city.size() > 0 && data.from_city.size() <= 100
+          && data.to_city is string && data.to_city.size() > 0 && data.to_city.size() <= 100
+          && data.fare is string && data.fare.size() > 0 && data.fare.size() <= 50;
+    }
+
+    function isValidSchedule(data) {
+      return data.keys().hasAll(['bus_id', 'route_id', 'departure_time', 'date'])
+          && isValidId(data.bus_id)
+          && isValidId(data.route_id)
+          && data.departure_time is string && data.departure_time.size() <= 50
+          && data.date is string && data.date.size() <= 50;
+    }
+
+    // --- Collections ---
+
+    match /test/connection {
+      allow read: if true;
+    }
+
+    match /buses/{busId} {
+      allow read, write: if true;
+    }
+
+    match /routes/{routeId} {
+      allow read, write: if true;
+    }
+
+    match /schedules/{scheduleId} {
+      allow read, write: if true;
+    }
+
+    match /bus_locations/{busId} {
+      allow read, write: if true;
+    }
+  }
+}

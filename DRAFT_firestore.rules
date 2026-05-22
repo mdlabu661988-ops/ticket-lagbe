@@ -1,0 +1,79 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() { return request.auth != null; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    // --- Validation Blueprints ---
+    
+    function isValidBus(data) {
+      return data.keys().hasAll(['name', 'reg_no', 'capacity'])
+          && data.name is string && data.name.size() > 0 && data.name.size() <= 100
+          && data.reg_no is string && data.reg_no.size() > 0 && data.reg_no.size() <= 50
+          && data.capacity is int && data.capacity > 0 && data.capacity <= 100
+          && (data.get('image_url', null) == null || (data.image_url is string && data.image_url.size() <= 500));
+    }
+
+    function isValidRoute(data) {
+      return data.keys().hasAll(['from_city', 'to_city', 'fare'])
+          && data.from_city is string && data.from_city.size() > 0 && data.from_city.size() <= 100
+          && data.to_city is string && data.to_city.size() > 0 && data.to_city.size() <= 100
+          && data.fare is string && data.fare.size() > 0 && data.fare.size() <= 20
+          && (data.get('status', null) == null || (data.status is string && data.status.size() <= 20));
+    }
+
+    function isValidSchedule(data) {
+      return data.keys().hasAll(['bus_id', 'route_id', 'departure_time', 'date'])
+          && isValidId(data.bus_id)
+          && isValidId(data.route_id)
+          && data.departure_time is string && data.departure_time.size() <= 20
+          && data.date is string && data.date.size() <= 20
+          && data.available_seats is int && data.available_seats >= 0;
+    }
+
+    // --- Collections ---
+
+    match /buses/{busId} {
+      allow read: if true;
+      allow create: if isSignedIn() && isValidId(busId) && isValidBus(incoming()) 
+                     && incoming().createdAt == request.time;
+      allow update: if isSignedIn() && isValidId(busId) && isValidBus(incoming())
+                     && incoming().updatedAt == request.time
+                     && incoming().createdAt == existing().createdAt;
+      allow delete: if isSignedIn();
+    }
+
+    match /routes/{routeId} {
+      allow read: if true;
+      allow create: if isSignedIn() && isValidId(routeId) && isValidRoute(incoming())
+                     && incoming().createdAt == request.time;
+      allow update: if isSignedIn() && isValidId(routeId) && isValidRoute(incoming())
+                     && incoming().updatedAt == request.time
+                     && incoming().createdAt == existing().createdAt;
+      allow delete: if isSignedIn();
+    }
+
+    match /schedules/{scheduleId} {
+      allow read: if true;
+      allow create: if isSignedIn() && isValidId(scheduleId) && isValidSchedule(incoming())
+                     && incoming().createdAt == request.time;
+      allow update: if isSignedIn() && isValidId(scheduleId) && isValidSchedule(incoming())
+                     && incoming().updatedAt == request.time
+                     && incoming().createdAt == existing().createdAt;
+      allow delete: if isSignedIn();
+    }
+
+    match /bus_locations/{busId} {
+      allow read: if true;
+      allow write: if false; // Only server writes
+    }
+  }
+}

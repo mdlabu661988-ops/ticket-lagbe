@@ -1,0 +1,72 @@
+{
+  "entities": {
+    "Bus": {
+      "title": "Bus",
+      "description": "Represents a bus in the fleet",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "name_en": { "type": "string" },
+        "name_bn": { "type": "string" },
+        "reg_no": { "type": "string" },
+        "driver": { "type": "string" },
+        "driver_phone": { "type": "string" },
+        "status": { "type": "string" },
+        "route": { "type": "string" },
+        "last_maintenance": { "type": "string" },
+        "next_maintenance": { "type": "string" },
+        "capacity": { "type": "integer" },
+        "owner_id": { "type": "string" },
+        "image_url": { "type": "string" }
+      },
+      "required": ["name", "reg_no", "capacity"]
+    },
+    "Route": {
+      "title": "Route",
+      "description": "Represents a travel route between two cities",
+      "type": "object",
+      "properties": {
+        "from_city": { "type": "string" },
+        "from_city_en": { "type": "string" },
+        "from_city_bn": { "type": "string" },
+        "to_city": { "type": "string" },
+        "to_city_en": { "type": "string" },
+        "to_city_bn": { "type": "string" },
+        "distance": { "type": "string" },
+        "duration": { "type": "string" },
+        "fare": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["from_city", "to_city", "fare"]
+    },
+    "Schedule": {
+      "title": "Schedule",
+      "description": "Represents a scheduled trip for a bus on a route",
+      "type": "object",
+      "properties": {
+        "bus_id": { "type": "string" },
+        "route_id": { "type": "string" },
+        "departure_time": { "type": "string" },
+        "arrival_time": { "type": "string" },
+        "date": { "type": "string" },
+        "status": { "type": "string" },
+        "available_seats": { "type": "integer" }
+      },
+      "required": ["bus_id", "route_id", "departure_time", "date"]
+    }
+  },
+  "firestore": {
+    "/buses/{busId}": {
+      "schema": "Bus",
+      "description": "Collection of buses"
+    },
+    "/routes/{routeId}": {
+      "schema": "Route",
+      "description": "Collection of travel routes"
+    },
+    "/schedules/{scheduleId}": {
+      "schema": "Schedule",
+      "description": "Collection of bus schedules"
+    }
+  }
+}
