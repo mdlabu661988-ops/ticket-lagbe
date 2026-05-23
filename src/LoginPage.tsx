@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Mail, Lock, ArrowRight, Bus, Facebook, Github, User, Phone, Loader2, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Bus, Facebook, Github, User, Phone, Loader2, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'motion/react';
 import { toast } from 'sonner';
 import { useLanguage } from './context/LanguageContext';
@@ -138,20 +138,7 @@ export default function LoginPage({ onLogin, onBack }: LoginPageProps) {
                 </button>
               </div>
 
-              {loginType === 'staff' && (
-                <div className="bg-amber-50 border border-amber-200/60 rounded-2xl p-4 mb-6 text-xs text-amber-800">
-                  <p className="font-bold flex items-center gap-1.5 mb-1.5 text-amber-900">
-                    <Shield size={14} className="text-amber-600 shrink-0" /> এডমিন লগইন ক্রেডেনশিয়াল (Admin Login Help)
-                  </p>
-                  <p className="leading-relaxed">
-                    সিস্টেম এডমিন হিসেবে লগইন করতে নিচের তথ্যগুলো ব্যবহার করুন:
-                  </p>
-                  <div className="mt-2 space-y-1 font-medium">
-                    <div>১. ইমেইল/ইউজারনেম: <code className="font-mono bg-amber-100/80 text-amber-900 px-1.5 py-0.5 rounded">admin</code></div>
-                    <div>২. পাসওয়ার্ড: <code className="font-mono bg-amber-100/80 text-amber-900 px-1.5 py-0.5 rounded">admin123</code></div>
-                  </div>
-                </div>
-              )}
+
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
@@ -300,14 +287,7 @@ export default function LoginPage({ onLogin, onBack }: LoginPageProps) {
             </form>
           )}
 
-          {loginType === 'staff' && (
-            <div className="mt-4 p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
-              <p className="text-[10px] font-bold text-emerald-700 uppercase tracking-widest mb-1">{t('auth.default_credentials')}</p>
-              <div className="text-xs text-emerald-600 space-y-1">
-                <p><span className="font-bold">{t('auth.admin')}:</span> admin@ticketlagbe.com / admin123</p>
-              </div>
-            </div>
-          )}
+
 
           <div className="mt-10">
             <div className="relative flex items-center justify-center mb-8">
