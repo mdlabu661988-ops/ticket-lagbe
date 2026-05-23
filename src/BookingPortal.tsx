@@ -96,7 +96,7 @@ export default function BookingPortal({ onLogin, isLoggedIn, initialStep }: Book
   const [apiRoutes, setApiRoutes] = useState<any[]>([]);
   const [apiBuses, setApiBuses] = useState<any[]>([]);
   const [allBuses, setAllBuses] = useState<any[]>([]);
-  const [journeyDate, setJourneyDate] = useState('2024-03-11');
+  const [journeyDate, setJourneyDate] = useState('');
   const [carouselPivotDate, setCarouselPivotDate] = useState('2024-03-11');
 
   // Sync pivot date with journey date when searching or mounting
