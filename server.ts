@@ -17,7 +17,7 @@ import { GoogleGenAI } from '@google/genai';
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
@@ -147,6 +147,20 @@ try {
 } catch (error) {
   console.error('Database connection failed:', error);
   process.exit(1); // Exit if DB fails as it's critical
+}
+
+// Seed default users if they don't exist
+try {
+  const adminExists = db.prepare('SELECT id FROM users WHERE username = ? OR email = ?').get('admin', 'admin@ticketlagbe.com') as any;
+  if (!adminExists) {
+    db.prepare(`
+      INSERT INTO users (username, password, role, name, email, phone, address, member_since)
+      VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+    `).run('admin', 'admin123', 'admin', 'System Admin', 'admin@ticketlagbe.com', '', '');
+    console.log('✓ Default admin user created (admin / admin123)');
+  }
+} catch (error) {
+  console.error('Error seeding default users:', error);
 }
 
 // Ledger Helper
