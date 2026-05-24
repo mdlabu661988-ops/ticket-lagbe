@@ -1,7 +1,9 @@
 node_modules/
 build/
-dist/
 coverage/
+
+# Include dist/ for Hostinger deployment (production build)
+# dist/
 .DS_Store
 *.log
 .env*
